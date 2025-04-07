@@ -2,10 +2,10 @@ from rest_framework import generics
 from .models import Listing
 from .serializers import ListingSerializer
 
-class ListingListAPIView(generics.ListCreateAPIView):
+class ListingList(generics.ListCreateAPIView):
     queryset = Listing.objects.all().order_by('-created_at')
     serializer_class = ListingSerializer
 
-class ListingDetailAPIView(generics.RetrieveAPIView):
+class ListingDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Listing.objects.all()
     serializer_class = ListingSerializer
