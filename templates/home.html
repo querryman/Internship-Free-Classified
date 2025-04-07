@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home</title>
+</head>
+<body>
+    <h1>Welcome {{ user.username }}</h1>
+
+    {% if user.is_authenticated %}
+        <p><a href="{% url 'logout' %}">Logout</a></p>
+        {% if user.profile.is_provider %}
+            <p>You are a provider! You can post and edit services.</p>
+        {% else %}
+            <p>You are a seeker! You can search and apply to posts.</p>
+        {% endif %}
+    {% else %}
+        <p><a href="{% url 'login' %}">Login</a> or <a href="{% url 'register' %}">Register</a></p>
+    {% endif %}
+</body>
+</html>
