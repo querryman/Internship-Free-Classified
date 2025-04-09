@@ -1,129 +1,106 @@
-/* SplashScreen.css */
 .app-container {
-  position: relative;
   background-color: #0C1431;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  overflow-x: hidden; /* Only hide horizontal overflow */
+  overflow-x: hidden;
   position: relative;
 }
 
-.content {
-  flex: 1; /* Takes all available space */
-  display: flex;
-  flex-direction: column;
-  padding: 20px 24px 0;
-}
-
-.logo-container {
-  text-align: center;
-  margin-top: 16px;
+.header {
+  text-align: left;
+  padding: 1.5rem 1.5rem 0;
 }
 
 .logo-text {
   color: white;
-  font-size: 2.5rem; /* Using rem units for better responsiveness */
+  font-size: 2.5rem;
   font-weight: 600;
-  margin-top: 1.5rem;
-  margin-left: 1.5rem; /* Added margin for spacing */
 }
 
 .illustration-container {
-  position: absolute;
-  top: 20%;
-  left: 50%;
-  transform: translateX(-50%);
+  flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 400px;
-  padding: 20px 0;
+  padding: 2rem 1rem;
 }
 
 .illustrations {
-  position: relative;
   width: 90%;
   max-width: 400px;
   height: auto;
-  border-radius: 40%;
-  object-fit: contain; /* Prevent cropping */
-  margin: 10px 0;
+  border-radius: 30px;
+  object-fit: contain;
 }
 
 .bottom-section {
   background-color: #5A627A;
-  padding: 5rem 2.5rem;
+  padding: 3rem 2rem;
   text-align: center;
-  border-radius: 20px 20px 0 0;
+  border-radius: 2rem 2rem 0 0;
   color: white;
-  margin-top: auto; /* Push to bottom naturally */
 }
+
+.bottom-section h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.bottom-section p {
+  font-size: 1.125rem;
+  line-height: 1.5;
+  margin-bottom: 2rem;
+}
+
 .get-started-btn {
-  margin-top: 20px;
   background-color: black;
   color: #FFD900;
-  padding: 12px 40px;
+  padding: 0.75rem 2rem;
   border: none;
   border-radius: 999px;
-  font-weight: 500;
-  font-size: 22px;
+  font-weight: 600;
+  font-size: 1.25rem;
   cursor: pointer;
+  transition: all 0.3s ease;
 }
+
 .get-started-btn:hover {
   opacity: 0.9;
-  transform: scale(1.02);
-  transition: all 0.2s ease-in-out;
+  transform: scale(1.05);
 }
-/* Rest of your existing styles remain the same */
 
-/* Media query for mobile devices */
+/* Responsive Design */
 @media (max-width: 767px) {
-  .app-container {
-    overflow-y: auto; /* Allow vertical scrolling if needed */
-  }
-
-  .content {
-    padding: 16px;
-  }
-
   .logo-text {
     font-size: 2rem;
-    margin-left: 0;
+    text-align: center;
   }
 
   .illustration-container {
-    position: static; /* Remove absolute positioning on small screens */
-    margin: 0 auto;    /* Center block element */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px 0;
-    min-height: 300px; /* Optional: Adjust for smaller screens */
-    width: 100%;       /* Ensure full width */
+    padding: 1rem;
   }
 
-  .illustration {
+  .illustrations {
     width: 80%;
-    max-width: 720px;
-    margin: 15px auto;
+    max-width: 300px;
+    border-radius: 20px;
   }
-  
 
   .bottom-section {
-    padding: 1.5rem 1rem;
+    padding: 2rem 1rem;
   }
 
   .bottom-section h2 {
-    font-size: 1.3rem;
+    font-size: 1.5rem;
   }
 
   .bottom-section p {
-    font-size: 0.875rem;
+    font-size: 1rem;
   }
 
   .get-started-btn {
     font-size: 1rem;
-    padding: 12px 30px;
+    padding: 0.75rem 1.5rem;
   }
 }
