@@ -1,0 +1,89 @@
+/* SplashScreen.css */
+.app-container {
+  background-color: #0C1431;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+}
+.content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+  padding: 24px;
+}
+
+
+.logo-container {
+  text-align: center;
+  margin-top: 16px;
+}
+
+
+.logo-text {
+  color: white;
+  font-size: 34px;
+  font-weight: 600;
+  margin-top: 28px;
+  margin-left: 33px;
+}
+
+.illustration-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 24px;
+}
+
+.illustration {
+  margin-bottom: 10px;
+  width: 100%;
+  max-width: 200px;
+  aspect-ratio: 1 / 1;
+  border-radius: 40%;
+  object-fit: cover;
+  max-width: 270px;
+  width: 100%;
+}
+
+.bottom-section {
+  margin-top: 1px;
+  background-color: #5A627A;
+  padding: 50px 74px;
+  border-radius: 80px;
+  text-align: center;
+  color: white;
+}
+
+.bottom-section h2 {
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.bottom-section p {
+  margin-top: 2px;
+  font-size: 14px;
+  color: #e0e0e0;
+}
+
+.get-started-btn {
+  margin-top: 20px;
+  background-color: black;
+  color: #FFD900;
+  padding: 12px 40px;
+  border: none;
+  border-radius: 999px;
+  font-weight: 500;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+/* Optional: Add hover effects */
+.get-started-btn:hover {
+  opacity: 0.9;
+  transform: scale(1.02);
+  transition: all 0.2s ease-in-out;
+}
