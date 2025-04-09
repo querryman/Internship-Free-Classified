@@ -1,11 +1,10 @@
 from rest_framework import generics, filters
 from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
-from django.shortcuts import get_object_or_404
+from .pagination import CustomPagination
 from .models import Listing
 from .serializers import (
     ListingSerializer,
-    ListingListSerializer,
     JobListingDetailSerializer,
     ServiceListingDetailSerializer,
     ProductListingDetailSerializer
@@ -19,6 +18,7 @@ class ListingList(generics.ListCreateAPIView):
     filterset_fields = ['location', 'price', 'listing_type'] 
     search_fields = ['title', 'description']
     ordering_fields = ['created_at', 'price']
+    pagination_class = CustomPagination
 
 class ListingDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Listing.objects.all()
@@ -34,6 +34,6 @@ class ListingDetail(generics.RetrieveUpdateDestroyAPIView):
         elif hasattr(listing, 'productlisting'):
             serializer = ProductListingDetailSerializer(listing.productlisting)
         else:
-            serializer = ListingListSerializer(listing)
+            serializer = ListingSerializer(listing)
 
         return Response(serializer.data)
