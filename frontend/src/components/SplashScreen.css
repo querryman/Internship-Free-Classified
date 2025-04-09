@@ -1,12 +1,13 @@
 /* SplashScreen.css */
+
 .app-container {
   background-color: #0C1431;
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   overflow: hidden;
-
 }
+
 .content {
   display: flex;
   flex-direction: column;
@@ -16,74 +17,126 @@
   padding: 24px;
 }
 
-
-.logo-container {
-  text-align: center;
-  margin-top: 16px;
+/* Header styles */
+.header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
 }
-
 
 .logo-text {
   color: white;
   font-size: 34px;
   font-weight: 600;
-  margin-top: 28px;
-  margin-left: 33px;
+  justify-content: center;
 }
 
+/* Bottom section */
+.bottom-section {
+  background-color: #5A627A;
+  border-radius: 40px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column; /* default: mobile vertical */
+  align-items: center;
+  text-align: center;
+  color: white;
+  gap: 24px;
+}
+
+/* Inside bottom-section */
 .illustration-container {
   display: flex;
   justify-content: center;
-  margin-top: 24px;
 }
 
 .illustration {
-  margin-bottom: 10px;
-  width: 100%;
-  max-width: 200px;
-  aspect-ratio: 1 / 1;
+  width: 80%;
+  max-width: 270px;
   border-radius: 40%;
   object-fit: cover;
-  max-width: 270px;
-  width: 100%;
 }
 
-.bottom-section {
-  margin-top: 1px;
-  background-color: #5A627A;
-  padding: 50px 74px;
-  border-radius: 80px;
-  text-align: center;
-  color: white;
+.text-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.bottom-section h2 {
+.text-container h2 {
   font-size: 24px;
   font-weight: 600;
-  line-height: 1.4;
+  margin: 16px 0 8px;
 }
 
-.bottom-section p {
-  margin-top: 2px;
+.text-container p {
   font-size: 14px;
   color: #e0e0e0;
+  margin-bottom: 16px;
 }
 
 .get-started-btn {
-  margin-top: 20px;
   background-color: black;
   color: #FFD900;
-  padding: 12px 40px;
+  padding: 12px 32px;
   border: none;
   border-radius: 999px;
   font-weight: 500;
-  font-size: 22px;
+  font-size: 18px;
   cursor: pointer;
+  transition: all 0.2s ease-in-out;
 }
 
-/* Optional: Add hover effects */
 .get-started-btn:hover {
   opacity: 0.9;
   transform: scale(1.02);
-  transition: all 0.2s ease-in-out;
+}
+
+/* -------- Responsive Layout -------- */
+@media (min-width: 768px) {
+  .bottom-section {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    text-align: left;
+    padding: 4rem 6rem;
+  }
+
+  .illustration {
+    width: 80%;
+    max-width: 400px;
+    min-width: 270px;
+    border-radius: 40%;
+    object-fit: cover;
+  }
+
+  .illustration-container {
+    flex: 3;
+    display: flex;              
+    justify-content: center;
+    align-items: center;         
+    padding-right: 40px;
+  }
+
+  .text-container {
+    flex: 1;
+    display: flex;               
+    flex-direction: column;
+    justify-content: center;     
+    align-items: flex-start; 
+  }
+
+  .text-container h2 {
+    font-size: 32px;
+  }
+
+  .text-container p {
+    font-size: 16px;
+  }
+
+  .get-started-btn {
+    font-size: 20px;
+    padding: 16px 48px;
+  }
 }
