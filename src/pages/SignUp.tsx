@@ -8,7 +8,7 @@ export const SignUp = () => {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
     const { error } = await supabase.auth.signUp({
       email,
@@ -21,6 +21,16 @@ export const SignUp = () => {
       alert('Check your email for confirmation.');
       navigate('/login');
     }
+  };
+
+  const handleOAuth = async (provider: 'google' | 'facebook') => {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider,
+      options: {
+        redirectTo: `${window.location.origin}/home`,
+      },
+    });
+    if (error) alert(error.message);
   };
 
   return (
@@ -45,29 +55,23 @@ export const SignUp = () => {
           </Link>
         </div>
 
-        <form className="space-y-4" onSubmit={handleSubmit}>
-          <div>
-            <input
-              type="email"
-              name="email"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full p-3 rounded-full bg-white/10 text-white placeholder-gray-400"
-              required
-            />
-          </div>
-          <div>
-            <input
-              type="password"
-              name="password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full p-3 rounded-full bg-white/10 text-white placeholder-gray-400"
-              required
-            />
-          </div>
+        <form className="space-y-4" onSubmit={handleSignUp}>
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-full p-3 rounded-full bg-white/10 text-white placeholder-gray-400"
+            required
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full p-3 rounded-full bg-white/10 text-white placeholder-gray-400"
+            required
+          />
           <button
             type="submit"
             className="w-full bg-gray-700 text-white p-3 rounded-full"
@@ -77,7 +81,10 @@ export const SignUp = () => {
         </form>
 
         <div className="space-y-4">
-          <button className="w-full flex items-center justify-center gap-2 bg-white p-3 rounded-full">
+          <button
+            onClick={() => handleOAuth('google')}
+            className="w-full flex items-center justify-center gap-2 bg-white p-3 rounded-full"
+          >
             <img
               src="https://www.google.com/favicon.ico"
               alt="Google"
@@ -85,7 +92,10 @@ export const SignUp = () => {
             />
             Sign up with Google
           </button>
-          <button className="w-full flex items-center justify-center gap-2 bg-[#1877F2] text-white p-3 rounded-full">
+          <button
+            onClick={() => handleOAuth('facebook')}
+            className="w-full flex items-center justify-center gap-2 bg-[#1877F2] text-white p-3 rounded-full"
+          >
             <img
               src="https://www.facebook.com/favicon.ico"
               alt="Facebook"

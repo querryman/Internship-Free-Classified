@@ -22,6 +22,16 @@ export const Login = () => {
     }
   };
 
+  const handleOAuth = async (provider: 'google' | 'facebook') => {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider,
+      options: {
+        redirectTo: `${window.location.origin}/home`,
+      },
+    });
+    if (error) alert(error.message);
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 p-6 flex flex-col items-center">
       <div className="mb-8">
@@ -50,26 +60,22 @@ export const Login = () => {
         </div>
 
         <form onSubmit={handleLogin} className="space-y-4">
-          <div>
-            <input
-              type="email"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full p-3 rounded-full bg-white/10 text-white placeholder-gray-400"
-              required
-            />
-          </div>
-          <div>
-            <input
-              type="password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full p-3 rounded-full bg-white/10 text-white placeholder-gray-400"
-              required
-            />
-          </div>
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-full p-3 rounded-full bg-white/10 text-white placeholder-gray-400"
+            required
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full p-3 rounded-full bg-white/10 text-white placeholder-gray-400"
+            required
+          />
           <button
             type="submit"
             className="w-full bg-yellow-400 text-gray-900 p-3 rounded-full font-semibold"
@@ -79,7 +85,10 @@ export const Login = () => {
         </form>
 
         <div className="space-y-4">
-          <button className="w-full flex items-center justify-center gap-2 bg-white p-3 rounded-full">
+          <button
+            onClick={() => handleOAuth('google')}
+            className="w-full flex items-center justify-center gap-2 bg-white p-3 rounded-full"
+          >
             <img
               src="https://www.google.com/favicon.ico"
               alt="Google"
@@ -87,7 +96,10 @@ export const Login = () => {
             />
             Sign in with Google
           </button>
-          <button className="w-full flex items-center justify-center gap-2 bg-[#1877F2] text-white p-3 rounded-full">
+          <button
+            onClick={() => handleOAuth('facebook')}
+            className="w-full flex items-center justify-center gap-2 bg-[#1877F2] text-white p-3 rounded-full"
+          >
             <img
               src="https://www.facebook.com/favicon.ico"
               alt="Facebook"
