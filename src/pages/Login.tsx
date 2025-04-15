@@ -7,29 +7,47 @@ export const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+    setError('');
+
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
 
     if (error) {
-      alert(error.message);
+      setError(error.message);
     } else {
       navigate('/home');
     }
   };
 
-  const handleOAuth = async (provider: 'google' | 'facebook') => {
-    const { error } = await supabase.auth.signInWithOAuth({
+  const handleOAuthLogin = async (provider: 'google' | 'facebook') => {
+    setError('');
+
+    const { data: existingUsers, error: userFetchError } = await supabase
+      .from('users') // Ensure you have a `users` table or use 'auth.users' via RPC
+      .select('email')
+      .eq('email', email);
+
+    if (userFetchError) {
+      setError('Unable to verify user. Please try again.');
+      return;
+    }
+
+    if (existingUsers.length === 0) {
+      setError('No account found with this email. Please sign up first.');
+      return;
+    }
+
+    const { error: oauthError } = await supabase.auth.signInWithOAuth({
       provider,
       options: {
         redirectTo: `${window.location.origin}/home`,
       },
     });
-    if (error) alert(error.message);
+
+    if (oauthError) setError(oauthError.message);
   };
 
   return (
@@ -59,23 +77,31 @@ export const Login = () => {
           </Link>
         </div>
 
+        {error && (
+          <div className="text-red-500 text-sm text-center">{error}</div>
+        )}
+
         <form onSubmit={handleLogin} className="space-y-4">
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full p-3 rounded-full bg-white/10 text-white placeholder-gray-400"
-            required
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full p-3 rounded-full bg-white/10 text-white placeholder-gray-400"
-            required
-          />
+          <div>
+            <input
+              type="email"
+              placeholder="Email"
+              className="w-full p-3 rounded-full bg-white/10 text-white placeholder-gray-400"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+          <div>
+            <input
+              type="password"
+              placeholder="Password"
+              className="w-full p-3 rounded-full bg-white/10 text-white placeholder-gray-400"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
           <button
             type="submit"
             className="w-full bg-yellow-400 text-gray-900 p-3 rounded-full font-semibold"
@@ -86,25 +112,17 @@ export const Login = () => {
 
         <div className="space-y-4">
           <button
-            onClick={() => handleOAuth('google')}
+            onClick={() => handleOAuthLogin('google')}
             className="w-full flex items-center justify-center gap-2 bg-white p-3 rounded-full"
           >
-            <img
-              src="https://www.google.com/favicon.ico"
-              alt="Google"
-              className="w-5 h-5"
-            />
+            <img src="https://www.google.com/favicon.ico" alt="Google" className="w-5 h-5" />
             Sign in with Google
           </button>
           <button
-            onClick={() => handleOAuth('facebook')}
+            onClick={() => handleOAuthLogin('facebook')}
             className="w-full flex items-center justify-center gap-2 bg-[#1877F2] text-white p-3 rounded-full"
           >
-            <img
-              src="https://www.facebook.com/favicon.ico"
-              alt="Facebook"
-              className="w-5 h-5"
-            />
+            <img src="https://www.facebook.com/favicon.ico" alt="Facebook" className="w-5 h-5" />
             Sign in with Facebook
           </button>
         </div>
