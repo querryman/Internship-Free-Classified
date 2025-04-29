@@ -195,7 +195,7 @@ export const BuyList: React.FC = () => {
                       date={listing.created_at}
                       image={listing.images[0]}
                       link={`/buy/${listing.category}/${listing.id}`}
-                      tags={listing.tags || []}
+                      //tags={listing.tags || []}
                       category={listing.category}
                     />
                   ))}
