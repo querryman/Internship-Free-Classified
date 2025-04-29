@@ -11,6 +11,7 @@ interface CardProps {
   link: string;
   tags?: string[];
   category?: string;
+  variant?: 'listing' | 'job' | 'testimonial'; // New prop for variants
 }
 
 export const Card: React.FC<CardProps> = ({
@@ -22,14 +23,17 @@ export const Card: React.FC<CardProps> = ({
   date,
   link,
   tags,
-  category
+  category,
+  variant = 'listing', // Default variant
 }) => {
   return (
     <Link 
       to={link}
-      className="group block bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300"
+      className={`group block bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 ${
+        variant === 'testimonial' ? 'p-6 text-center' : ''
+      }`}
     >
-      {image && (
+      {image && variant !== 'testimonial' ? (
         <div className="relative h-48 overflow-hidden">
           <img 
             src={image} 
@@ -47,44 +51,60 @@ export const Card: React.FC<CardProps> = ({
             </span>
           )}
         </div>
+      ) : (
+        <div className="relative h-48 overflow-hidden bg-gray-200 flex items-center justify-center">
+          <span className="text-gray-500">No Image Available</span>
+        </div>
       )}
-      
-      <div className="p-4">
-        <h3 className="text-lg font-semibold text-navy-900 group-hover:text-navy-700 transition-colors mb-1 line-clamp-1">
+
+      <div className={`p-4 ${variant === 'testimonial' ? 'p-0' : ''}`}>
+        <h3 className={`text-lg font-semibold ${
+          variant === 'testimonial' ? 'text-navy-900 mb-2' : 'text-navy-900 group-hover:text-navy-700 transition-colors mb-1 line-clamp-1'
+        }`}>
           {title}
         </h3>
-        
-        {description && (
+
+        {description && variant !== 'testimonial' && (
           <p className="text-navy-600 text-sm line-clamp-2 mb-3">
             {description}
           </p>
         )}
-        
-        <div className="flex flex-wrap gap-1 mt-2">
-          {tags && tags.map((tag, index) => (
-            <span 
-              key={index} 
-              className="bg-navy-100 text-navy-800 text-xs px-2 py-0.5 rounded-full"
-            >
-              {tag}
-            </span>
-          ))}
-        </div>
-        
-        <div className="flex items-center justify-between mt-3 text-xs text-navy-500">
-          {location && (
-            <span className="flex items-center">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
-              </svg>
-              {location}
-            </span>
-          )}
-          
-          {date && (
-            <span>{date}</span>
-          )}
-        </div>
+
+        {variant === 'testimonial' && (
+          <p className="text-navy-700 mb-3">
+            {description}
+          </p>
+        )}
+
+        {tags && variant !== 'testimonial' && (
+          <div className="flex flex-wrap gap-1 mt-2">
+            {tags.map((tag, index) => (
+              <span 
+                key={index} 
+                className="bg-navy-100 text-navy-800 text-xs px-2 py-0.5 rounded-full"
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+        )}
+
+        {variant === 'listing' && (
+          <div className="flex items-center justify-between mt-3 text-xs text-navy-500">
+            {location && (
+              <span className="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
+                </svg>
+                {location}
+              </span>
+            )}
+
+            {date && (
+              <span>{date}</span>
+            )}
+          </div>
+        )}
       </div>
     </Link>
   );

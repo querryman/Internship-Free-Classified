@@ -9,6 +9,8 @@ import { Car, Home as HomeIcon, Package, Briefcase, Wrench, ShoppingBag } from '
 import { Link } from 'react-router-dom';
 import { Button } from '../../components/Button';
 import { useAuth } from '../../context/AuthContext';
+import { CategorySection } from '../../components/CategorySection';
+import { ListingSection } from '../../components/ListingSection';
 
 export const Home: React.FC = () => {
   const { user } = useAuth();
@@ -210,161 +212,29 @@ export const Home: React.FC = () => {
       </section>
       
       {/* Categories Section */}
-      <section className="py-10 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl md:text-3xl font-bold text-navy-900">
-              Browse Categories
-            </h2>
-          </div>
-          
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {categories.map((category, index) => (
-              <div key={index} className="animate-fade-in" style={{animationDelay: `${0.05 * index}s`}}>
-                <CategoryCard {...category} />
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <CategorySection categories={categories} />
       
       {/* Recent Listings Section */}
-      <section className="py-10">
-        <div className="container mx-auto px-4">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl md:text-3xl font-bold text-navy-900">
-              Recent Listings
-            </h2>
-            <Link to="/buy" className="text-accent-500 hover:text-accent-600 font-medium flex items-center">
-              View All
-              <svg 
-                xmlns="http://www.w3.org/2000/svg" 
-                className="h-5 w-5 ml-1" 
-                viewBox="0 0 20 20" 
-                fill="currentColor"
-              >
-                <path 
-                  fillRule="evenodd" 
-                  d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" 
-                  clipRule="evenodd" 
-                />
-              </svg>
-            </Link>
-          </div>
-          
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {recentListings.map((listing, index) => (
-              <div key={listing.id} className="animate-fade-in" style={{animationDelay: `${0.05 * index}s`}}>
-                <Card {...listing} />
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <ListingSection 
+        title="Recent Listings" 
+        listings={recentListings} 
+        viewAllLink="/buy" 
+      />
       
       {/* Recent Jobs Section */}
-      <section className="py-10 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl md:text-3xl font-bold text-navy-900">
-              Recent Jobs
-            </h2>
-            <Link to="/jobs" className="text-accent-500 hover:text-accent-600 font-medium flex items-center">
-              View All
-              <svg 
-                xmlns="http://www.w3.org/2000/svg" 
-                className="h-5 w-5 ml-1" 
-                viewBox="0 0 20 20" 
-                fill="currentColor"
-              >
-                <path 
-                  fillRule="evenodd" 
-                  d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" 
-                  clipRule="evenodd" 
-                />
-              </svg>
-            </Link>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            {recentJobs.map((job, index) => (
-              <div key={job.id} className="animate-fade-in" style={{animationDelay: `${0.05 * index}s`}}>
-                <Card {...job} />
-              </div>
-            ))}
-          </div>
-          
-          {user ? (
-            <div className="text-center mt-8">
-              <Link to="/jobs/create">
-                <Button variant="primary" icon={<Briefcase size={18} />}>
-                  Post a Job
-                </Button>
-              </Link>
-            </div>
-          ) : (
-            <div className="text-center mt-8">
-              <Link to="/login">
-                <Button variant="outline">
-                  Sign in to Post a Job
-                </Button>
-              </Link>
-            </div>
-          )}
-        </div>
-      </section>
+      <ListingSection 
+        title="Recent Jobs" 
+        listings={recentJobs} 
+        variant="job" 
+        viewAllLink="/jobs" 
+      />
       
       {/* Recent Services Section */}
-      <section className="py-10">
-        <div className="container mx-auto px-4">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl md:text-3xl font-bold text-navy-900">
-              Popular Services
-            </h2>
-            <Link to="/services" className="text-accent-500 hover:text-accent-600 font-medium flex items-center">
-              View All
-              <svg 
-                xmlns="http://www.w3.org/2000/svg" 
-                className="h-5 w-5 ml-1" 
-                viewBox="0 0 20 20" 
-                fill="currentColor"
-              >
-                <path 
-                  fillRule="evenodd" 
-                  d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" 
-                  clipRule="evenodd" 
-                />
-              </svg>
-            </Link>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            {recentServices.map((service, index) => (
-              <div key={service.id} className="animate-fade-in" style={{animationDelay: `${0.05 * index}s`}}>
-                <Card {...service} />
-              </div>
-            ))}
-          </div>
-          
-          {user ? (
-            <div className="text-center mt-8">
-              <Link to="/services/create">
-                <Button variant="primary" icon={<Wrench size={18} />}>
-                  Offer a Service
-                </Button>
-              </Link>
-            </div>
-          ) : (
-            <div className="text-center mt-8">
-              <Link to="/login">
-                <Button variant="outline">
-                  Sign in to Offer a Service
-                </Button>
-              </Link>
-            </div>
-          )}
-        </div>
-      </section>
+      <ListingSection 
+        title="Popular Services" 
+        listings={recentServices} 
+        viewAllLink="/services" 
+      />
       
       {/* CTA Section */}
       <section className="py-12 bg-navy-900 text-white">
