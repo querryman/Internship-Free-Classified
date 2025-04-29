@@ -30,9 +30,19 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
 }) => {
   const [localPriceRange, setLocalPriceRange] = useState(priceRange);
 
-  const handleSliderChange = (range: [number, number]) => {
-    setLocalPriceRange(range);
-    onPriceChange(range);
+  const handleSliderChange = (value: number | number[]) => {
+    if (Array.isArray(value) && value.length === 2) {
+      const range = value as [number, number];
+      setLocalPriceRange(range);
+    }
+  };
+
+  const handleSliderAfterChange = (value: number | number[]) => {
+    if (Array.isArray(value) && value.length === 2) {
+      const range = value as [number, number];
+      setLocalPriceRange(range);
+      onPriceChange(range);
+    }
   };
 
   return (
@@ -72,6 +82,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
           step={100}
           value={localPriceRange}
           onChange={handleSliderChange}
+          onAfterChange={handleSliderAfterChange} // Trigger only after mouse release
         />
         <p>{`Price: $${localPriceRange[0]} - $${localPriceRange[1]}`}</p>
       </div>

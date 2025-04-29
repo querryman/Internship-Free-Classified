@@ -37,6 +37,7 @@ export const BuyList: React.FC = () => {
   const [sortBy, setSortBy] = useState('newest');
   const [searchKeyword, setSearchKeyword] = useState('');
   const [listings, setListings] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchProducts();
@@ -71,8 +72,9 @@ export const BuyList: React.FC = () => {
     if (error) {
       console.error('Error fetching products:', error);
     } else {
-      setListings(data as Product[]);
+      setListings(data as Product[] || []);
     }
+    setLoading(false);
   };
 
   const resetFilters = () => {
@@ -83,7 +85,7 @@ export const BuyList: React.FC = () => {
     setSearchKeyword('');
   };
 
-  if (!listings.length) {
+  if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
@@ -117,6 +119,7 @@ export const BuyList: React.FC = () => {
               sortBy={sortBy}
               onSortChange={setSortBy}
               onReset={resetFilters}
+              onPriceChange={setPriceRange}
             />
 
             <div className="flex-1">

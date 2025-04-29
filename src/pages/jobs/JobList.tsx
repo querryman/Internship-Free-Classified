@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { supabase } from '../../utils/supabaseClient';
 import { Navbar } from '../../components/Navbar';
 import { Footer } from '../../components/Footer';
-import { Card } from '../../components/Card';
 import { Button } from '../../components/Button';
 import { SearchBar } from '../../components/SearchBar';
 import { FilterPanel } from '../../components/FilterPanel';
 import { ListingGrid } from '../../components/ListingGrid';
+import { supabase } from '../../utils/supabaseClient';
 
 interface Job {
   id: string;
@@ -28,17 +26,20 @@ export const JobList = () => {
   const [location_, setLocation] = useState('');
   const [sortBy, setSortBy] = useState('newest');
   const [searchKeyword, setSearchKeyword] = useState('');
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 1000000]);
 
   useEffect(() => {
     fetchJobs();
-  }, [selectedCategory, location_, sortBy, searchKeyword]);
+  }, [selectedCategory, priceRange, location_, sortBy, searchKeyword]);
 
   const fetchJobs = async () => {
     setLoading(true);
     try {
       let query = supabase
         .from('jobs')
-        .select('*');
+        .select('*')
+        .gte('salary', priceRange[0])
+        .lte('salary', priceRange[1]);
 
       if (selectedCategory) {
         query = query.eq('category', selectedCategory);
@@ -64,19 +65,43 @@ export const JobList = () => {
       } else {
         setJobs(data || []);
       }
+      setLoading(false);
     } catch (error) {
       console.error('Error fetching jobs:', error);
-    } finally {
       setLoading(false);
     }
   };
 
   const resetFilters = () => {
+    setPriceRange([0, 1000000]);
     setSelectedCategory('');
     setLocation('');
     setSortBy('newest');
     setSearchKeyword('');
   };
+
+  const handleCategoryChange = (category: string) => {
+    setSelectedCategory(category as Category);
+  };
+
+  const handleSliderAfterChange = (value: number | number[]) => {
+    if (Array.isArray(value) && value.length === 2) {
+      const range = value as [number, number];
+      setPriceRange(range);
+    }
+  };
+
+  const formattedJobs = jobs.map((job) => ({
+    id: parseInt(job.id, 10), // Ensure id is a number
+    title: job.title,
+    price: parseFloat(job.salary), // Ensure price is a number
+    location: job.location,
+    date: job.created_at,
+    image: '', // Placeholder for image
+    link: `/jobs/${job.id}`,
+    tags: [job.company],
+    category: selectedCategory, // Placeholder for category
+  }));
 
   if (loading) {
     return (
@@ -107,6 +132,8 @@ export const JobList = () => {
               categories={['engineering', 'marketing', 'sales']}
               selectedCategory={selectedCategory}
               onCategoryChange={setSelectedCategory}
+              priceRange={priceRange}
+              onPriceChange={handleSliderAfterChange} // Ensure range is propagated
               location={location_}
               onLocationChange={setLocation}
               sortBy={sortBy}
@@ -117,16 +144,7 @@ export const JobList = () => {
             <div className="flex-1">
               {jobs.length > 0 ? (
                 <ListingGrid
-                  items={jobs.map((job) => ({
-                    id: job.id,
-                    title: job.title,
-                    price: job.salary,
-                    location: job.location,
-                    date: job.created_at,
-                    link: `/jobs/${job.id}`,
-                    tags: [job.company],
-                    variant: "job" // Specify the variant
-                  }))}
+                  items={formattedJobs}
                 />
               ) : (
                 <div className="bg-white rounded-xl shadow-sm p-8 text-center">
